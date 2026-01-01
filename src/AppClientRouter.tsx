@@ -6,8 +6,8 @@ import {
 import { lazy, Suspense, type ComponentType } from "react";
 import App from "./App";
 import { routes, type RouteType } from "@rt/routing/routes";
-import ErrorPage from "@rt/pages/PublicPages/ErrorPage/ErrorPage";
-import ErrorBoundary from "@rt/pages/PublicPages/ErrorPage/ErrorBoundaryPage";
+import ErrorPage from "@rt/pages/OtherPages/ErrorPage/ErrorPage";
+import ErrorBoundary from "@rt/pages/OtherPages/ErrorPage/ErrorBoundaryPage";
 
 const AppClientRouter = () => {
     const pages = import.meta.glob("./pages/**/*.tsx") as Record<

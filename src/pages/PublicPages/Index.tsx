@@ -1,4 +1,5 @@
 import { checkUserAuthentication } from "@rt/authentication/auth-utils";
+import PrivateLayout from "@rt/layouts/PrivateLayout";
 import { getRoutePath } from "@rt/routing/routes";
 import { ROUTES_ID } from "@rt/routing/routes-id";
 
@@ -10,7 +11,9 @@ const Index = () => {
     return <Navigate to={getRoutePath(ROUTES_ID.dashboard)} replace />;
   }
   return (
-    <Outlet />
+    <PrivateLayout>
+      <Outlet />
+    </PrivateLayout>
   );
 };
 
