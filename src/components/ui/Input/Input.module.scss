@@ -1,0 +1,36 @@
+.field {
+  display: grid;
+  gap: 6px;
+}
+
+.label {
+  font-size: 12px;
+  color: #344054;
+  font-weight: 600;
+}
+
+.input {
+  height: 40px;
+  border-radius: 10px;
+  border: 1.5px solid #d0d5dd;
+  padding: 0 12px;
+  outline: none;
+  background: #fff;
+  transition:
+    border-color 120ms ease,
+    box-shadow 120ms ease;
+
+  &:focus {
+    border-color: #c7f150;
+    box-shadow: 0 0 0 4px rgba(199, 241, 80, 0.25);
+  }
+}
+
+.inputError {
+  border-color: #f04438;
+}
+
+.errorText {
+  font-size: 12px;
+  color: #d92d20;
+}

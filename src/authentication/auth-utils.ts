@@ -1,10 +1,11 @@
-const AUTH_STORAGE_KEY = "isAuthenticated";
+const TOKEN_STORAGE_KEY = "accessToken";
 
-export function checkUserAuthentication(): boolean {
-  return localStorage.getItem(AUTH_STORAGE_KEY) === "true";
+
+
+export function getToken() {
+  return localStorage.getItem(TOKEN_STORAGE_KEY) ?? "";
 }
 
-export function setUserAuthenticated(isAuthenticated: boolean): void {
-  localStorage.setItem(AUTH_STORAGE_KEY, String(isAuthenticated));
+export function setToken(token: string): void {
+  localStorage.setItem(TOKEN_STORAGE_KEY, token);
 }
-

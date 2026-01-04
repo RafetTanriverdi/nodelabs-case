@@ -1,0 +1,39 @@
+.loginPageContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 6rem;
+}
+
+.logo {
+  width: 110px;
+}
+
+.loginFormContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 400px;
+  padding: 1rem 0;
+}
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.field {
+  margin-bottom: 5px;
+}
+
+.inputError {
+  border: 1px solid #ef4444 !important;
+}
+.signUpText {
+  display: flex;
+  justify-content: center;
+}
+
+.errorText {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #ef4444;
+}
