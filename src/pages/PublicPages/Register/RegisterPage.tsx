@@ -10,6 +10,8 @@ import styles from "./RegisterPage.module.scss";
 
 import { useRegister } from "@rt/hooks/useAuth";
 import { Navigate } from "react-router-dom";
+import { getRoutePath } from "@rt/routing/routes";
+import { ROUTES_ID } from "@rt/routing/routes-id";
 
 type RegisterValues = {
   fullName: string;
@@ -46,7 +48,7 @@ const RegisterForm = () => {
   };
 
   if (mutation.isSuccess) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to={getRoutePath(ROUTES_ID.login)} replace />;
   }
   return (
     <div className={styles.registerPageContainer}>

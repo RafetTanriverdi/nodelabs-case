@@ -1,42 +1,32 @@
+import Sidebar from "@rt/components/layout/Sidebar/Sidebar";
+import { useLogout } from "@rt/hooks/useAuth";
+import { getRoutePath } from "@rt/routing/routes";
+import { ROUTES_ID } from "@rt/routing/routes-id";
 import type { PropsWithChildren } from "react";
-import clockImage from "@rt/assets/images/clock.png";
+import { Navigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function PrivateLayout({ children }: PropsWithChildren) {
+  const mutation = useLogout();
+
+  if (mutation.isSuccess) {
+    return <Navigate to={getRoutePath(ROUTES_ID.login)} replace />;
+  }
+
+  const onLogout = () => {
+    try {
+      mutation.mutate();
+      toast.success("Logged out successfully.");
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      toast.error(`Logout failed: ${message}`);
+    }
+  };
+
   return (
     <div style={{ display: "flex", height: "100vh", width: "100%" }}>
-      <div
-        style={{
-          width: "60%",
-          height: "100%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          overflowY: "hidden",
-        }}
-      >
-        {children}
-      </div>
-      <div
-        style={{
-          width: "40%",
-          height: "100%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "flex-end",
-          overflow: "hidden",
-        }}
-      >
-        <img
-          src={clockImage}
-          alt="Private Page Image"
-          style={{
-            height: "100%",
-            width: "100%",
-            maxWidth: "100%",
-            objectFit: "cover",
-          }}
-        />
-      </div>
+      <Sidebar onLogout={onLogout} />
+      {children}
     </div>
   );
 }

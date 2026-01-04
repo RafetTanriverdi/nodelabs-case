@@ -43,3 +43,16 @@ export function useRegister() {
     },
   });
 }
+
+export function useLogout() {
+  return useMutation({
+    mutationKey: ["logout"],
+    mutationFn: async () => {
+      const response = await axiosInstance.post("/users/logout");
+      return response.data;
+    },
+    onSuccess: () => {
+      localStorage.removeItem("accessToken");
+    },
+  });
+}

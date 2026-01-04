@@ -10,6 +10,8 @@ import styles from "./LoginPage.module.scss";
 import { toast } from "react-toastify";
 import Text from "@rt/components/ui/Text/Text";
 import { Navigate } from "react-router-dom";
+import { getRoutePath } from "@rt/routing/routes";
+import { ROUTES_ID } from "@rt/routing/routes-id";
 
 type LoginValues = {
   email: string;
@@ -36,7 +38,7 @@ const LoginForm = () => {
   const initialValues: LoginValues = { email: "", password: "" };
 
   if (mutation.isSuccess) {
-    return <Navigate to="/" replace />;
+    return <Navigate to={getRoutePath(ROUTES_ID.dashboard)} replace />;
   }
 
   return (
