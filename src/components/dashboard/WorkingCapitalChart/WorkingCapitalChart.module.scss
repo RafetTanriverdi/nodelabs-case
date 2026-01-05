@@ -1,0 +1,98 @@
+.card {
+  background: #fff;
+  border: 1px solid #eef0f3;
+  border-radius: 14px;
+  padding: 16px 16px 10px;
+  width: 75%;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #101828;
+}
+
+.legend {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  color: #344054;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dotIncome,
+.dotExpense {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  display: inline-block;
+}
+
+.dotIncome {
+  background: #0e9f6e;
+}
+
+.dotExpense {
+  background: #b7f000;
+}
+
+.rangeBtn {
+  margin-left: 8px;
+  background: #f7f8fa;
+  border: 1px solid #eef0f3;
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #344054;
+  cursor: pointer;
+}
+
+.chev {
+  margin-left: 6px;
+}
+
+.chartWrap {
+  height: 260px;
+  margin-top: 8px;
+}
+
+.tooltip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  white-space: nowrap;
+  background: #f2f4f7;
+  color: #101828;
+  font-weight: 700;
+  font-size: 12px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(16, 24, 40, 0.12);
+}
+
+.tooltipLabel {
+  font-weight: 700;
+  color: #101828;
+}
+
+.tooltipValue {
+  font-weight: 700;
+  color: #101828;
+}

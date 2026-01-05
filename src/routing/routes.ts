@@ -1,7 +1,6 @@
 import { ROUTES_ID } from "@rt/routing/routes-id";
 import { flattenRoutes } from "@rt/utils/flatten-routes";
 
-
 export interface RouteType {
   id: string;
   filePath: string;
@@ -22,7 +21,6 @@ export const routes: RouteType[] = [
         title: "Dashboard",
         path: "/",
       },
-    
     ],
   },
   {
@@ -30,12 +28,6 @@ export const routes: RouteType[] = [
     id: ROUTES_ID.publicPages,
     filePath: "PublicPages/Index",
     children: [
-      {
-        id: ROUTES_ID.forgotPassword,
-        filePath: "PublicPages/ForgotPassword/ForgotPasswordPage",
-        title: "Forgot Password",
-        path: "/forgotpassword",
-      },
       {
         id: ROUTES_ID.login,
         filePath: "PublicPages/Login/LoginPage",

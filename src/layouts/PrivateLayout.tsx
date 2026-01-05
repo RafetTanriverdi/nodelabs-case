@@ -26,7 +26,7 @@ function PrivateLayout({ children }: PropsWithChildren) {
   return (
     <div style={{ display: "flex", height: "100vh", width: "100%" }}>
       <Sidebar onLogout={onLogout} />
-      {children}
+      <div style={{ width: "100%" }}>{children}</div>
     </div>
   );
 }

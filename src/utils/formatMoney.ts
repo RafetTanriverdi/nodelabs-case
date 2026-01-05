@@ -18,3 +18,18 @@ export function formatMoney(
     maximumFractionDigits: options?.maximumFractionDigits ?? 0,
   }).format(value);
 }
+
+export function formatMoneyTransfers(
+  amount: number,
+  currencySymbol: string,
+  locale: string
+) {
+  const abs = Math.abs(amount);
+
+  const n = new Intl.NumberFormat(locale, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(abs);
+
+  return `- ${currencySymbol}${n}`;
+}
