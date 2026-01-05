@@ -1,4 +1,6 @@
 import styles from "./RecentTransactions.module.scss";
+import { HiChevronRight } from "react-icons/hi2";
+import { useMemo, useState } from "react";
 
 export type ApiTransaction = {
   id: string;
@@ -17,6 +19,8 @@ type Props = {
   transactions: ApiTransaction[];
   onViewAll?: () => void;
   viewAllText?: string;
+  viewLessText?: string;
+  maxVisible?: number;
   locale?: string; // default en-GB (Apr 2022 like figma)
 };
 
@@ -51,16 +55,48 @@ export default function RecentTransactions({
   transactions,
   onViewAll,
   viewAllText = "View All",
+  viewLessText = "Show Less",
+  maxVisible,
   locale = "en-GB",
 }: Props) {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const canExpand =
+    typeof maxVisible === "number" && Number.isFinite(maxVisible) && maxVisible > 0
+      ? transactions.length > maxVisible
+      : false;
+
+  const visibleTransactions = useMemo(() => {
+    if (canExpand && !isExpanded) return transactions.slice(0, maxVisible);
+    return transactions;
+  }, [canExpand, isExpanded, maxVisible, transactions]);
+
+  const showViewAllButton = Boolean(onViewAll) || canExpand;
+
+  const handleViewAll = () => {
+    if (onViewAll) {
+      onViewAll();
+      return;
+    }
+    if (!canExpand) return;
+    setIsExpanded((v) => !v);
+  };
+
   return (
     <section className={styles.card} aria-label={title}>
       <header className={styles.header}>
         <h3 className={styles.title}>{title}</h3>
 
-        <button type="button" className={styles.viewAll} onClick={onViewAll}>
-          {viewAllText} <span className={styles.arrow}>›</span>
-        </button>
+        {showViewAllButton ? (
+          <button
+            type="button"
+            className={styles.viewAll}
+            onClick={handleViewAll}
+            aria-expanded={canExpand ? isExpanded : undefined}
+          >
+            {(canExpand && isExpanded ? viewLessText : viewAllText) as string}{" "}
+            <HiChevronRight className={styles.arrow} aria-hidden="true" />
+          </button>
+        ) : null}
       </header>
 
       <div className={styles.table}>
@@ -72,12 +108,12 @@ export default function RecentTransactions({
         </div>
 
         <div className={styles.tbody}>
-          {transactions.map((t, idx) => (
+          {visibleTransactions.map((t, idx) => (
             <div
               key={t.id}
               className={styles.tr}
               role="row"
-              data-last={idx === transactions.length - 1 ? "true" : "false"}
+              data-last={idx === visibleTransactions.length - 1 ? "true" : "false"}
             >
               <div className={styles.tdName}>
                 <div className={styles.iconWrap}>
@@ -88,7 +124,7 @@ export default function RecentTransactions({
                     draggable={false}
                     loading="lazy"
                     onError={(e) => {
-                      // image fail olursa fallback avatar göster
+                      // image fail olursa fallback avatar gÇôster
                       const img = e.currentTarget;
                       img.style.display = "none";
                       const parent = img.parentElement;

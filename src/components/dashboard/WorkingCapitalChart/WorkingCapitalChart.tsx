@@ -2,6 +2,7 @@ import { ResponsiveLine } from "@nivo/line";
 import styles from "./WorkingCapitalChart.module.scss";
 import { formatMoney } from "@rt/utils/formatMoney";
 import { useMemo, useState } from "react";
+import { HiChevronDown } from "react-icons/hi2";
 
 type ApiItem = { month: string; income: number; expense: number; net: number };
 
@@ -36,7 +37,7 @@ export default function WorkingCapitalChart({ items }: { items: ApiItem[] }) {
         </div>
 
         <button className={styles.rangeBtn} type="button">
-          Last 6 months <span className={styles.chev}>▾</span>
+          Last 7 days <HiChevronDown className={styles.chev} aria-hidden="true" />
         </button>
       </div>
 

@@ -81,27 +81,28 @@ function SummaryCard({
 
   return (
     <div className={variant === "dark" ? styles.cardDark : styles.cardLight}>
-      <div className={styles.topRow}>
+      <div className={styles.bottomRow}>
+        <div className={styles.info} style={{ display: "flex", gap: "15px" }}>
+          <div
+            className={
+              variant === "dark" ? styles.iconDarkWrap : styles.iconWrap
+            }
+            data-icon={icon}
+            aria-hidden="true"
+          >
+            {icon}
+          </div>
+
+          <div className={styles.meta}>
+            <div className={styles.title}>{title}</div>
+            <div className={styles.amount}>
+              {formatMoney(amount, currency, { maximumFractionDigits: 2 })}
+            </div>
+          </div>
+        </div>
         <div className={isUp ? styles.badgeUp : styles.badgeDown}>
           <Icon className={styles.badgeIcon} />
           <span>{Math.abs(change.percentage).toFixed(1)}%</span>
-        </div>
-      </div>
-
-      <div className={styles.bottomRow}>
-        <div
-          className={variant === "dark" ? styles.iconDarkWrap : styles.iconWrap}
-          data-icon={icon}
-          aria-hidden="true"
-        >
-          {icon}
-        </div>
-
-        <div className={styles.meta}>
-          <div className={styles.title}>{title}</div>
-          <div className={styles.amount}>
-            {formatMoney(amount, currency, { maximumFractionDigits: 2 })}
-          </div>
         </div>
       </div>
     </div>

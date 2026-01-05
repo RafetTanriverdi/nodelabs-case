@@ -1,0 +1,22 @@
+.layout {
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+}
+
+@media (max-width: 720px) {
+  .layout {
+    padding: 0;
+  }
+
+  .shell {
+    height: 100vh;
+    border-radius: 0;
+  }
+}

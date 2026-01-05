@@ -2,6 +2,8 @@ import { formatMoneyTransfers } from "@rt/utils/formatMoney";
 import styles from "./ScheduledTransfers.module.scss";
 import { formatDateLabel } from "@rt/utils/format-date";
 import Text from "@rt/components/ui/Text/Text";
+import { HiChevronRight } from "react-icons/hi2";
+import { useMemo, useState } from "react";
 
 export type ScheduledTransfer = {
   id: string;
@@ -18,6 +20,8 @@ type Props = {
   transfers: ScheduledTransfer[];
   onViewAll?: () => void;
   viewAllText?: string;
+  viewLessText?: string;
+  maxVisible?: number;
   locale?: string;
 };
 
@@ -26,25 +30,57 @@ export default function ScheduledTransfers({
   transfers,
   onViewAll,
   viewAllText = "View All",
+  viewLessText = "Show Less",
+  maxVisible,
   locale = "en-US",
 }: Props) {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const canExpand =
+    typeof maxVisible === "number" && Number.isFinite(maxVisible) && maxVisible > 0
+      ? transfers.length > maxVisible
+      : false;
+
+  const visibleTransfers = useMemo(() => {
+    if (canExpand && !isExpanded) return transfers.slice(0, maxVisible);
+    return transfers;
+  }, [canExpand, isExpanded, maxVisible, transfers]);
+
+  const showViewAllButton = Boolean(onViewAll) || canExpand;
+
+  const handleViewAll = () => {
+    if (onViewAll) {
+      onViewAll();
+      return;
+    }
+    if (!canExpand) return;
+    setIsExpanded((v) => !v);
+  };
+
   return (
     <section className={styles.card} aria-label={title}>
       <header className={styles.header}>
         <Text variant="subtitle">{title}</Text>
 
-        <button type="button" className={styles.viewAll} onClick={onViewAll}>
-          {viewAllText} <span className={styles.arrow}>›</span>
-        </button>
+        {showViewAllButton ? (
+          <button
+            type="button"
+            className={styles.viewAll}
+            onClick={handleViewAll}
+            aria-expanded={canExpand ? isExpanded : undefined}
+          >
+            {(canExpand && isExpanded ? viewLessText : viewAllText) as string}{" "}
+            <HiChevronRight className={styles.arrow} aria-hidden="true" />
+          </button>
+        ) : null}
       </header>
 
       <div className={styles.list} role="list">
-        {transfers.map((t, idx) => (
+        {visibleTransfers.map((t, idx) => (
           <div
             key={t.id}
             className={styles.row}
             role="listitem"
-            data-last={idx === transfers.length - 1 ? "true" : "false"}
+            data-last={idx === visibleTransfers.length - 1 ? "true" : "false"}
           >
             <div className={styles.left}>
               <div className={styles.avatarWrap}>
@@ -59,9 +95,7 @@ export default function ScheduledTransfers({
 
               <div className={styles.meta}>
                 <div className={styles.name}>{t.name}</div>
-                <div className={styles.sub}>
-                  {formatDateLabel(t.date, locale)}
-                </div>
+                <div className={styles.sub}>{formatDateLabel(t.date, locale)}</div>
               </div>
             </div>
 

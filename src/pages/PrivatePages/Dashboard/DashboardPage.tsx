@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import Text from "@rt/components/ui/Text/Text";
 import { HiOutlineSearch } from "react-icons/hi";
 import { IoNotifications } from "react-icons/io5";
+import { HiChevronDown } from "react-icons/hi2";
 import styles from "./DashboardPage.module.scss";
 
 export default function DashboardPage() {
@@ -48,37 +49,76 @@ export default function DashboardPage() {
   });
 
   return (
-    <div style={{ display: "flex", flexDirection: "column" }}>
-      <DashboardHeader />
-      {walletLoading ? (
-        "Loading..."
-      ) : (
-        <WalletCardStack
-          topCard={wallet?.data?.cards[0] ?? []}
-          bottomCard={wallet?.data?.cards[1] ?? []}
-        />
-      )}
-      {workingCapitalLoading ? (
-        "Loading..."
-      ) : (
-        <WorkingCapitalChart items={workingCapital?.data?.data} />
-      )}
+    <div className={styles.page}>
+      <div className={styles.container}>
+        <DashboardHeader />
 
-      {summaryLoading ? "Loading..." : <SummaryCards data={summary?.data} />}
+        <div className={styles.grid}>
+          <main className={styles.main} aria-label="Dashboard content">
+            {summaryLoading ? (
+              <div className={styles.summarySkeleton} aria-busy="true" />
+            ) : (
+              <SummaryCards data={summary?.data} />
+            )}
 
-      {recentLoading ? (
-        "Loading..."
-      ) : (
-        <RecentTransactions transactions={recent?.data?.transactions ?? []} />
-      )}
-      {scheduledLoading ? (
-        "Loading..."
-      ) : (
-        <ScheduledTransfers
-          title="Scheduled Transfers"
-          transfers={scheduled?.data?.transfers ?? []}
-        />
-      )}
+            {workingCapitalLoading ? (
+              <div className={styles.cardSkeletonLg} aria-busy="true" />
+            ) : (
+              <WorkingCapitalChart items={workingCapital?.data?.data ?? []} />
+            )}
+
+            {recentLoading ? (
+              <div className={styles.cardSkeletonMd} aria-busy="true" />
+            ) : (
+              <RecentTransactions
+                transactions={recent?.data?.transactions ?? []}
+                maxVisible={4}
+              />
+            )}
+          </main>
+
+          <aside className={styles.aside} aria-label="Dashboard sidebar">
+            {walletLoading ? (
+              <div className={styles.cardSkeletonSm} aria-busy="true" />
+            ) : (
+              <WalletCardStack
+                topCard={
+                  wallet?.data?.cards?.[0] ?? {
+                    brand: "Fintech.",
+                    bank: "Universal Bank",
+                    cardNumber:
+                      "ѓ?Ѕѓ?Ѕѓ?Ѕѓ?Ѕ ѓ?Ѕѓ?Ѕѓ?Ѕѓ?Ѕ ѓ?Ѕѓ?Ѕѓ?Ѕѓ?Ѕ ѓ?Ѕѓ?Ѕѓ?Ѕѓ?Ѕ",
+                    expiryMonth: "09",
+                    expiryYear: "25",
+                    network: "Visa",
+                  }
+                }
+                bottomCard={
+                  wallet?.data?.cards?.[1] ?? {
+                    brand: "Fintech.",
+                    bank: "Commercial Bank",
+                    cardNumber:
+                      "ѓ?Ѕѓ?Ѕѓ?Ѕѓ?Ѕ ѓ?Ѕѓ?Ѕѓ?Ѕѓ?Ѕ ѓ?Ѕѓ?Ѕѓ?Ѕѓ?Ѕ ѓ?Ѕѓ?Ѕѓ?Ѕѓ?Ѕ",
+                    expiryMonth: "09",
+                    expiryYear: "25",
+                    network: "Mastercard",
+                  }
+                }
+              />
+            )}
+
+            {scheduledLoading ? (
+              <div className={styles.cardSkeletonMd} aria-busy="true" />
+            ) : (
+              <ScheduledTransfers
+                title="Scheduled Transfers"
+                transfers={scheduled?.data?.transfers ?? []}
+                maxVisible={4}
+              />
+            )}
+          </aside>
+        </div>
+      </div>
     </div>
   );
 }
@@ -97,8 +137,16 @@ const DashboardHeader = () => {
       <Text variant="title">Dashboard</Text>
 
       <div className={styles.headerRight}>
-        <HiOutlineSearch color="#929EAE" className={styles.icon} />
-        <IoNotifications color="#929EAE" className={styles.icon} />
+        <button type="button" className={styles.iconBtn} aria-label="Search">
+          <HiOutlineSearch className={styles.icon} />
+        </button>
+        <button
+          type="button"
+          className={styles.iconBtn}
+          aria-label="Notifications"
+        >
+          <IoNotifications className={styles.icon} />
+        </button>
         <span className={styles.profileContainer}>
           <img
             className={styles.profileImage}
@@ -106,6 +154,7 @@ const DashboardHeader = () => {
             alt="Profile"
           />
           {profileLoading ? "Loading..." : profile?.data?.fullName}
+          <HiChevronDown className={styles.profileChevron} aria-hidden="true" />
         </span>
       </div>
     </div>
