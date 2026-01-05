@@ -1,6 +1,6 @@
 
 import { defineConfig, type PluginOption } from "vite";
-import react from "@vitejs/plugin-react";
+import react from "@vitejs/plugin-react-swc";
 import path from "path";
 
 function resolveSrc(_path: string): string {
