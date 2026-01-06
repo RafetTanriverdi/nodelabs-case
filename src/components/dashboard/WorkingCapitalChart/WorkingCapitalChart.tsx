@@ -2,11 +2,26 @@ import { ResponsiveLine } from "@nivo/line";
 import styles from "./WorkingCapitalChart.module.scss";
 import { formatMoney } from "@rt/utils/formatMoney";
 import { useMemo, useState } from "react";
-import { HiChevronDown } from "react-icons/hi2";
+import { HiChevronDown, HiOutlineExclamationTriangle } from "react-icons/hi2";
+import Skeleton from "@rt/components/ui/Skeleton/Skeleton";
+import ErrorState from "@rt/components/ui/ErrorState/ErrorState";
+import Button from "@rt/components/ui/Button/Button";
 
 type ApiItem = { month: string; income: number; expense: number; net: number };
 
-export default function WorkingCapitalChart({ items }: { items: ApiItem[] }) {
+type Props = {
+  items?: ApiItem[];
+  isLoading?: boolean;
+  error?: unknown;
+  onRetry?: () => void;
+};
+
+export default function WorkingCapitalChart({
+  items = [],
+  isLoading,
+  error,
+  onRetry,
+}: Props) {
   const [hoveredMonth, setHoveredMonth] = useState<string | null>(null);
 
   const data = useMemo(
@@ -19,6 +34,52 @@ export default function WorkingCapitalChart({ items }: { items: ApiItem[] }) {
     ],
     [items]
   );
+
+  if (isLoading) {
+    return <Skeleton variant="card-lg" aria-label="Loading working capital" />;
+  }
+
+  if (error) {
+    return (
+      <div className={styles.card} aria-label="Working Capital">
+        <div className={styles.header}>
+          <h3 className={styles.title}>Working Capital</h3>
+
+          <div className={styles.legend}>
+            <span className={styles.legendItem}>
+              <span className={styles.dotIncome} />
+              Income
+            </span>
+            <span className={styles.legendItem}>
+              <span className={styles.dotExpense} />
+              Expenses
+            </span>
+          </div>
+
+          <button className={styles.rangeBtn} type="button" disabled>
+            Last 7 days{" "}
+            <HiChevronDown className={styles.chev} aria-hidden="true" />
+          </button>
+        </div>
+
+        <div className={styles.empty}>
+          <ErrorState
+            variant="inline"
+            icon={<HiOutlineExclamationTriangle aria-hidden="true" />}
+            title="Working capital unavailable"
+            description={"Data could not be retrieved."}
+            actions={
+              onRetry ? (
+                <Button variant="primary" type="button" onClick={onRetry}>
+                  Try again
+                </Button>
+              ) : null
+            }
+          />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.card}>
@@ -37,7 +98,8 @@ export default function WorkingCapitalChart({ items }: { items: ApiItem[] }) {
         </div>
 
         <button className={styles.rangeBtn} type="button">
-          Last 7 days <HiChevronDown className={styles.chev} aria-hidden="true" />
+          Last 7 days{" "}
+          <HiChevronDown className={styles.chev} aria-hidden="true" />
         </button>
       </div>
 

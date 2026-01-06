@@ -7,6 +7,48 @@
   box-sizing: border-box;
 }
 
+.inline {
+  border-radius: 12px;
+  padding: 14px;
+  background: rgba(245, 158, 11, 0.06);
+  border-color: rgba(245, 158, 11, 0.22);
+}
+
+.inline .topRow {
+  margin-bottom: 10px;
+}
+
+.inline .iconWrap {
+  background: rgba(245, 158, 11, 0.12);
+  color: #b45309;
+}
+
+.inline .code {
+  background: rgba(245, 158, 11, 0.08);
+  border-color: rgba(245, 158, 11, 0.2);
+}
+
+.inline .title {
+  font-size: 14px;
+  line-height: 1.25;
+}
+
+.inline .description {
+  margin-top: 6px;
+  font-size: 12px;
+}
+
+.inline .details {
+  margin-top: 10px;
+}
+
+.inline .actions {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
 .topRow {
   display: flex;
   align-items: center;
@@ -88,4 +130,3 @@
     border-radius: 12px;
   }
 }
-

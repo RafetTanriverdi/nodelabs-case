@@ -7,11 +7,11 @@ import * as Yup from "yup";
 import logo from "@rt/assets/images/logo.png";
 
 import styles from "./LoginPage.module.scss";
-import { toast } from "react-toastify";
 import Text from "@rt/components/ui/Text/Text";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { getRoutePath } from "@rt/routing/routes";
 import { ROUTES_ID } from "@rt/routing/routes-id";
+import { toast } from "react-toastify";
 
 type LoginValues = {
   email: string;
@@ -56,17 +56,20 @@ const LoginForm = () => {
           validationSchema={validationSchema}
           validateOnBlur
           validateOnChange={false}
-          onSubmit={async (values) => {
+          onSubmit={async (values, helpers) => {
             try {
               await mutation.mutateAsync({
                 email: values.email,
                 password: values.password,
               });
-              toast.success("Login successful! ");
             } catch (error: unknown) {
-              const message =
-                error instanceof Error ? error.message : String(error);
-              toast.error(`Login failed: ${message}`);
+              toast.error(
+                "Login failed. Please check your credentials and try again."
+              );
+
+              void error;
+            } finally {
+              helpers.setSubmitting(false);
             }
           }}
         >
@@ -147,7 +150,11 @@ const LoginForm = () => {
         <div className={styles.signUpText}>
           <Text variant="hint" muted>
             Don’t have an account?{" "}
-            <Text as="a" href="/register" variant="link">
+            <Text
+              as={Link}
+              to={getRoutePath(ROUTES_ID.register)}
+              variant="link"
+            >
               Sign up
             </Text>
           </Text>

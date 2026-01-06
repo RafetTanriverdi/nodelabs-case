@@ -3,6 +3,10 @@ import { formatMoney } from "@rt/utils/formatMoney";
 import { HiArrowTrendingUp, HiArrowTrendingDown } from "react-icons/hi2";
 import { GiWallet } from "react-icons/gi";
 import { IoWallet } from "react-icons/io5";
+import Skeleton from "@rt/components/ui/Skeleton/Skeleton";
+import ErrorState from "@rt/components/ui/ErrorState/ErrorState";
+import Button from "@rt/components/ui/Button/Button";
+import { HiOutlineExclamationTriangle } from "react-icons/hi2";
 
 type Trend = "up" | "down";
 
@@ -26,9 +30,42 @@ export type FinancialSummaryResponse = {
 
 type Props = {
   data: FinancialSummaryResponse;
+  isLoading?: boolean;
+  error?: unknown;
+  onRetry?: () => void;
 };
 
-export default function SummaryCards({ data }: Props) {
+export default function SummaryCards({
+  data,
+  isLoading,
+  error,
+  onRetry,
+}: Props) {
+  if (isLoading) {
+    return <Skeleton variant="summary" aria-label="Loading summary" />;
+  }
+
+  if (error) {
+    return (
+      <div className={styles.summaryGrid} aria-label="Summary">
+        <ErrorState
+          variant="inline"
+          className={styles.status}
+          icon={<HiOutlineExclamationTriangle aria-hidden="true" />}
+          title="Summary unavailable"
+          description={"Data could not be retrieved."}
+          actions={
+            onRetry ? (
+              <Button variant="primary" type="button" onClick={onRetry}>
+                Try again
+              </Button>
+            ) : null
+          }
+        />
+      </div>
+    );
+  }
+
   return (
     <div className={styles.summaryGrid}>
       <SummaryCard

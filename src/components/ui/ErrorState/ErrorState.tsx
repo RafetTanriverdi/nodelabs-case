@@ -4,6 +4,7 @@ import Text from "@rt/components/ui/Text/Text";
 import styles from "./ErrorState.module.scss";
 
 type Props = {
+  variant?: "card" | "inline";
   title: string;
   description?: string;
   code?: string;
@@ -14,6 +15,7 @@ type Props = {
 };
 
 export default function ErrorState({
+  variant = "card",
   title,
   description,
   code,
@@ -22,8 +24,14 @@ export default function ErrorState({
   actions,
   className,
 }: Props) {
+  const isInline = variant === "inline";
+
   return (
-    <section className={clsx(styles.card, className)} role="alert" aria-live="polite">
+    <section
+      className={clsx(styles.card, isInline && styles.inline, className)}
+      role="alert"
+      aria-live="polite"
+    >
       {(icon || code) && (
         <div className={styles.topRow}>
           {icon ? <div className={styles.iconWrap}>{icon}</div> : null}
@@ -31,12 +39,16 @@ export default function ErrorState({
         </div>
       )}
 
-      <Text variant="title" className={styles.title}>
+      <Text variant={isInline ? "subtitle" : "title"} className={styles.title}>
         {title}
       </Text>
 
       {description ? (
-        <Text variant="subtitle" muted className={styles.description}>
+        <Text
+          variant={isInline ? "hint" : "subtitle"}
+          muted
+          className={styles.description}
+        >
           {description}
         </Text>
       ) : null}
@@ -51,4 +63,3 @@ export default function ErrorState({
     </section>
   );
 }
-

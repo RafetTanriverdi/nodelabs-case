@@ -4,6 +4,10 @@
   gap: 18px;
 }
 
+.status {
+  grid-column: 1 / -1;
+}
+
 .cardDark,
 .cardLight {
   border-radius: 14px;

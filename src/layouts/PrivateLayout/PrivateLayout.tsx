@@ -5,7 +5,6 @@ import { getRoutePath } from "@rt/routing/routes";
 import { ROUTES_ID } from "@rt/routing/routes-id";
 import type { PropsWithChildren } from "react";
 import { Navigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import { useEffect } from "react";
 import styles from "./PrivateLayout.module.scss";
 
@@ -32,13 +31,7 @@ function PrivateLayout({ children }: PropsWithChildren) {
   }
 
   const onLogout = () => {
-    try {
-      mutation.mutate();
-      toast.success("Logged out successfully.");
-    } catch (error: unknown) {
-      const message = error instanceof Error ? error.message : String(error);
-      toast.error(`Logout failed: ${message}`);
-    }
+    mutation.mutate();
   };
 
   return (

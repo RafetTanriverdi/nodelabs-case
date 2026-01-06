@@ -84,6 +84,17 @@
   overflow: auto;
 }
 
+.empty {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  color: #98a2b3;
+  font-size: 13px;
+  font-weight: 700;
+}
+
 .tr {
   display: grid;
   grid-template-columns: 1.8fr 1fr 0.9fr 0.9fr;

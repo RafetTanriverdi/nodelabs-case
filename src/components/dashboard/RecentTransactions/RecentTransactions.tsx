@@ -1,6 +1,9 @@
 import styles from "./RecentTransactions.module.scss";
-import { HiChevronRight } from "react-icons/hi2";
+import { HiChevronRight, HiOutlineExclamationTriangle } from "react-icons/hi2";
 import { useMemo, useState } from "react";
+import Skeleton from "@rt/components/ui/Skeleton/Skeleton";
+import ErrorState from "@rt/components/ui/ErrorState/ErrorState";
+import Button from "@rt/components/ui/Button/Button";
 
 export type ApiTransaction = {
   id: string;
@@ -8,20 +11,23 @@ export type ApiTransaction = {
   business: string;
   image: string;
   type: string;
-  amount: number; // negative expense
-  currency: string; // "TRY"
-  date: string; // ISO
+  amount: number;
+  currency: string;
+  date: string;
   status: "completed" | "pending" | "failed";
 };
 
 type Props = {
   title?: string;
-  transactions: ApiTransaction[];
+  transactions?: ApiTransaction[];
   onViewAll?: () => void;
   viewAllText?: string;
   viewLessText?: string;
   maxVisible?: number;
-  locale?: string; // default en-GB (Apr 2022 like figma)
+  locale?: string;
+  isLoading?: boolean;
+  error?: unknown;
+  onRetry?: () => void;
 };
 
 function formatAmount(amount: number, currency: string, locale: string) {
@@ -43,25 +49,23 @@ function formatDate(iso: string, locale: string) {
   }).format(d);
 }
 
-function initials(name: string) {
-  const parts = name.trim().split(/\s+/);
-  const a = parts[0]?.[0] ?? "T";
-  const b = parts[1]?.[0] ?? "";
-  return (a + b).toUpperCase();
-}
-
 export default function RecentTransactions({
   title = "Recent Transaction",
-  transactions,
+  transactions = [],
   onViewAll,
   viewAllText = "View All",
   viewLessText = "Show Less",
   maxVisible,
   locale = "en-GB",
+  isLoading,
+  error,
+  onRetry,
 }: Props) {
   const [isExpanded, setIsExpanded] = useState(false);
   const canExpand =
-    typeof maxVisible === "number" && Number.isFinite(maxVisible) && maxVisible > 0
+    typeof maxVisible === "number" &&
+    Number.isFinite(maxVisible) &&
+    maxVisible > 0
       ? transactions.length > maxVisible
       : false;
 
@@ -80,6 +84,38 @@ export default function RecentTransactions({
     if (!canExpand) return;
     setIsExpanded((v) => !v);
   };
+
+  if (isLoading) {
+    return (
+      <Skeleton variant="card-md" aria-label="Loading recent transactions" />
+    );
+  }
+
+  if (error) {
+    return (
+      <section className={styles.card} aria-label={title}>
+        <header className={styles.header}>
+          <h3 className={styles.title}>{title}</h3>
+        </header>
+
+        <div className={styles.empty}>
+          <ErrorState
+            variant="inline"
+            icon={<HiOutlineExclamationTriangle aria-hidden="true" />}
+            title="Recent transactions unavailable"
+            description={"Data could not be retrieved."}
+            actions={
+              onRetry ? (
+                <Button variant="primary" type="button" onClick={onRetry}>
+                  Try again
+                </Button>
+              ) : null
+            }
+          />
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className={styles.card} aria-label={title}>
@@ -113,7 +149,9 @@ export default function RecentTransactions({
               key={t.id}
               className={styles.tr}
               role="row"
-              data-last={idx === visibleTransactions.length - 1 ? "true" : "false"}
+              data-last={
+                idx === visibleTransactions.length - 1 ? "true" : "false"
+              }
             >
               <div className={styles.tdName}>
                 <div className={styles.iconWrap}>
@@ -123,19 +161,6 @@ export default function RecentTransactions({
                     className={styles.iconImg}
                     draggable={false}
                     loading="lazy"
-                    onError={(e) => {
-                      // image fail olursa fallback avatar gÇôster
-                      const img = e.currentTarget;
-                      img.style.display = "none";
-                      const parent = img.parentElement;
-                      if (parent && !parent.querySelector("[data-fallback]")) {
-                        const div = document.createElement("div");
-                        div.setAttribute("data-fallback", "true");
-                        div.className = styles.fallbackAvatar;
-                        div.textContent = initials(t.business || t.name);
-                        parent.appendChild(div);
-                      }
-                    }}
                   />
                 </div>
 

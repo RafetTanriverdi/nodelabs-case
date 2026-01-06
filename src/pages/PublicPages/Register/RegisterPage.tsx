@@ -5,13 +5,13 @@ import logo from "@rt/assets/images/logo.png";
 
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { toast } from "react-toastify";
 import styles from "./RegisterPage.module.scss";
 
 import { useRegister } from "@rt/hooks/useAuth";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { getRoutePath } from "@rt/routing/routes";
 import { ROUTES_ID } from "@rt/routing/routes-id";
+import { toast } from "react-toastify";
 
 type RegisterValues = {
   fullName: string;
@@ -72,12 +72,9 @@ const RegisterForm = () => {
                 email: values.email,
                 password: values.password,
               });
-
-              toast.success("Account created successfully!");
             } catch (error: unknown) {
-              const message =
-                error instanceof Error ? error.message : String(error);
-              toast.error(`Register failed: ${message}`);
+              toast.error("Registration failed. Please try again later.");
+              void error;
             } finally {
               helpers.setSubmitting(false);
             }
@@ -170,7 +167,7 @@ const RegisterForm = () => {
         <div className={styles.signInText}>
           <Text variant="hint" muted>
             Already have an account?{" "}
-            <Text as="a" href="/login" variant="link">
+            <Text as={Link} to={getRoutePath(ROUTES_ID.login)} variant="link">
               Sign in
             </Text>
           </Text>

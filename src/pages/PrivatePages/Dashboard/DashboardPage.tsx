@@ -11,92 +11,64 @@ import { IoNotifications } from "react-icons/io5";
 import { HiBars3, HiChevronDown, HiXMark } from "react-icons/hi2";
 import { usePrivateLayoutStore } from "@rt/stores/private-layout-store";
 import styles from "./DashboardPage.module.scss";
+import { useDashboard } from "@rt/hooks/useDashboard";
+import { ENDPOINTS } from "@rt/api/endpoints";
 
 export default function DashboardPage() {
-  const { data: summary, isLoading: summaryLoading } = useQuery({
-    queryKey: ["dashboard-summary"],
-    queryFn: async () => {
-      const res = await axiosInstance.get("/financial/summary");
-      return res.data;
-    },
-  });
-  const { data: workingCapital, isLoading: workingCapitalLoading } = useQuery({
-    queryKey: ["dashboard-workingCapital"],
-    queryFn: async () => {
-      const res = await axiosInstance.get("/financial/working-capital");
-      return res.data;
-    },
-  });
-  const { data: wallet, isLoading: walletLoading } = useQuery({
-    queryKey: ["dashboard-wallet"],
-    queryFn: async () => {
-      const res = await axiosInstance.get("/financial/wallet");
-      return res.data;
-    },
-  });
-  const { data: recent, isLoading: recentLoading } = useQuery({
-    queryKey: ["dashboard-recent"],
-    queryFn: async () => {
-      const res = await axiosInstance.get("/financial/transactions/recent");
-      return res.data;
-    },
-  });
-  const { data: scheduled, isLoading: scheduledLoading } = useQuery({
-    queryKey: ["dashboard-scheduled"],
-    queryFn: async () => {
-      const res = await axiosInstance.get("/financial/transfers/scheduled");
-      return res.data;
-    },
-  });
+  const {
+    summaryQuery,
+    workingCapitalQuery,
+    recentQuery,
+    walletQuery,
+    scheduledQuery,
+  } = useDashboard();
 
   return (
     <div className={styles.page}>
       <div className={styles.container}>
         <DashboardHeader />
-
         <div className={styles.grid}>
           <main className={styles.main} aria-label="Dashboard content">
-            {summaryLoading ? (
-              <div className={styles.summarySkeleton} aria-busy="true" />
-            ) : (
-              <SummaryCards data={summary?.data} />
-            )}
+            <SummaryCards
+              data={summaryQuery.data?.data}
+              isLoading={summaryQuery.isLoading}
+              error={summaryQuery.error}
+              onRetry={() => summaryQuery.refetch()}
+            />
 
-            {workingCapitalLoading ? (
-              <div className={styles.cardSkeletonLg} aria-busy="true" />
-            ) : (
-              <WorkingCapitalChart items={workingCapital?.data?.data} />
-            )}
+            <WorkingCapitalChart
+              items={workingCapitalQuery.data?.data?.data}
+              isLoading={workingCapitalQuery.isLoading}
+              error={workingCapitalQuery.error}
+              onRetry={() => workingCapitalQuery.refetch()}
+            />
 
-            {recentLoading ? (
-              <div className={styles.cardSkeletonMd} aria-busy="true" />
-            ) : (
-              <RecentTransactions
-                transactions={recent?.data?.transactions}
-                maxVisible={4}
-              />
-            )}
+            <RecentTransactions
+              transactions={recentQuery.data?.data?.transactions}
+              maxVisible={4}
+              isLoading={recentQuery.isLoading}
+              error={recentQuery.error}
+              onRetry={() => recentQuery.refetch()}
+            />
           </main>
 
           <aside className={styles.aside} aria-label="Dashboard sidebar">
-            {walletLoading ? (
-              <div className={styles.cardSkeletonSm} aria-busy="true" />
-            ) : (
-              <WalletCardStack
-                topCard={wallet?.data?.cards?.[0]}
-                bottomCard={wallet?.data?.cards?.[1]}
-              />
-            )}
+            <WalletCardStack
+              topCard={walletQuery.data?.data?.cards?.[0]}
+              bottomCard={walletQuery.data?.data?.cards?.[1]}
+              isLoading={walletQuery.isLoading}
+              error={walletQuery.error}
+              onRetry={() => walletQuery.refetch()}
+            />
 
-            {scheduledLoading ? (
-              <div className={styles.cardSkeletonMd} aria-busy="true" />
-            ) : (
-              <ScheduledTransfers
-                title="Scheduled Transfers"
-                transfers={scheduled?.data?.transfers}
-                maxVisible={4}
-              />
-            )}
+            <ScheduledTransfers
+              title="Scheduled Transfers"
+              transfers={scheduledQuery.data?.data?.transfers}
+              maxVisible={4}
+              isLoading={scheduledQuery.isLoading}
+              error={scheduledQuery.error}
+              onRetry={() => scheduledQuery.refetch()}
+            />
           </aside>
         </div>
       </div>
@@ -105,10 +77,14 @@ export default function DashboardPage() {
 }
 
 const DashboardHeader = () => {
-  const { data: profile, isLoading: profileLoading } = useQuery({
+  const {
+    data: profile,
+    isLoading: profileLoading,
+    error: profileError,
+  } = useQuery({
     queryKey: ["users-profile"],
     queryFn: async () => {
-      const res = await axiosInstance.get("/users/profile");
+      const res = await axiosInstance.get(ENDPOINTS.USER.PROFILE);
       return res.data;
     },
   });
@@ -153,7 +129,11 @@ const DashboardHeader = () => {
             alt="Profile"
           />
           <span className={styles.profileName}>
-            {profileLoading ? "Loading..." : profile?.data?.fullName}
+            {profileLoading
+              ? "Loading..."
+              : profileError
+                ? "Profile unavailable"
+                : profile?.data?.fullName}
           </span>
           <HiChevronDown className={styles.profileChevron} aria-hidden="true" />
         </span>

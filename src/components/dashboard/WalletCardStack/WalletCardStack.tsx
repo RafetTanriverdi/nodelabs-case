@@ -1,9 +1,16 @@
 import { FcSimCardChip } from "react-icons/fc";
-import { HiEllipsisHorizontal, HiOutlineWifi } from "react-icons/hi2";
+import {
+  HiEllipsisHorizontal,
+  HiOutlineExclamationTriangle,
+  HiOutlineWifi,
+} from "react-icons/hi2";
 import styles from "./WalletCardStack.module.scss";
 
 import visaPng from "@rt/assets/images/visa.png";
 import mastercardPng from "@rt/assets/images/mastercard.png";
+import Skeleton from "@rt/components/ui/Skeleton/Skeleton";
+import ErrorState from "@rt/components/ui/ErrorState/ErrorState";
+import Button from "@rt/components/ui/Button/Button";
 
 export type CardData = {
   brand: string;
@@ -19,6 +26,9 @@ type Props = {
   topCard: CardData;
   bottomCard: CardData;
   onMenuClick?: () => void;
+  isLoading?: boolean;
+  error?: unknown;
+  onRetry?: () => void;
 };
 
 function networkSrc(network?: CardData["network"]) {
@@ -31,7 +41,39 @@ export default function WalletCardStack({
   topCard,
   bottomCard,
   onMenuClick,
+  isLoading,
+  error,
+  onRetry,
 }: Props) {
+  if (isLoading) {
+    return <Skeleton variant="card-sm" aria-label="Loading wallet" />;
+  }
+
+  if (error) {
+    return (
+      <section className={styles.walletSection} aria-label="Wallet">
+        <div className={styles.header}>
+          <h3 className={styles.title}>{title}</h3>
+        </div>
+        <div className={styles.stateWrap}>
+          <ErrorState
+            variant="inline"
+            icon={<HiOutlineExclamationTriangle aria-hidden="true" />}
+            title="Wallet unavailable"
+            description={"Data could not be retrieved."}
+            actions={
+              onRetry ? (
+                <Button variant="primary" type="button" onClick={onRetry}>
+                  Try again
+                </Button>
+              ) : null
+            }
+          />
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className={styles.walletSection} aria-label="Wallet">
       <div className={styles.header}>

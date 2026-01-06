@@ -1,56 +1,30 @@
 .container {
-  width: 100%;
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 24px 16px;
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  z-index: 9999;
 }
 
-.stack {
-  display: grid;
-  gap: 14px;
+.spinner {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 4px solid rgba(16, 24, 40, 0.16);
+  border-top-color: rgba(16, 24, 40, 0.7);
+  animation: spin 700ms linear infinite;
 }
 
-.shimmer {
-  border: 1px solid rgba(16, 24, 40, 0.06);
-  background: linear-gradient(
-    90deg,
-    rgba(16, 24, 40, 0.04),
-    rgba(16, 24, 40, 0.08),
-    rgba(16, 24, 40, 0.04)
-  );
-  background-size: 200% 100%;
-  animation: pageShimmer 1.2s ease-in-out infinite;
-}
-
-.title {
-  width: 180px;
-  height: 28px;
-  border-radius: 10px;
-}
-
-.line {
-  width: min(520px, 70%);
-  height: 12px;
-  border-radius: 8px;
-}
-
-.card {
-  width: 100%;
-  height: 280px;
-  border-radius: 16px;
-}
-
-@keyframes pageShimmer {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
 }
 
-@media (max-width: 520px) {
-  .card {
-    height: 220px;
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation: none;
   }
 }
