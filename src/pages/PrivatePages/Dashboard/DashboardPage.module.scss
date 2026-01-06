@@ -1,5 +1,6 @@
 .page {
   height: 100vh;
+  min-height: 100dvh;
   overflow: hidden;
 }
 
@@ -12,6 +13,8 @@
   gap: 18px;
   height: 100%;
   min-height: 0;
+  padding: 0 16px;
+  box-sizing: border-box;
 }
 
 .grid {
@@ -47,12 +50,48 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.headerTitle {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mobileMenuBtn {
+  display: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  border: 1px solid #eef0f3;
+  background: #ffffff;
+  color: #344054;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  flex: 0 0 auto;
+}
+
+.mobileMenuBtn:hover {
+  background: #f9fafb;
+}
+
+.mobileMenuBtn svg {
+  width: 20px;
+  height: 20px;
 }
 .headerRight {
   display: flex;
   align-items: center;
   flex-direction: row;
   gap: 16px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 .iconBtn {
   width: 36px;
@@ -82,6 +121,14 @@
   padding: 4px 8px;
   border-radius: 10px;
   border: 1px solid #eef0f3;
+}
+.profileName {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 180px;
+  min-width: 0;
 }
 .icon {
   width: 20px;
@@ -189,5 +236,115 @@
 
   .cardSkeletonSm {
     height: 230px;
+  }
+}
+
+@media (max-width: 720px) {
+  .headerContainer {
+    flex-wrap: nowrap;
+  }
+
+  .headerTitle {
+    font-size: 20px;
+  }
+
+  .headerRight {
+    flex-wrap: nowrap;
+  }
+
+  .mobileMenuBtn {
+    display: inline-flex;
+  }
+
+  .iconBtn {
+    width: 34px;
+    height: 34px;
+    border-radius: 11px;
+  }
+
+  .icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .profileContainer {
+    font-size: 13px;
+    padding: 3px 7px;
+  }
+
+  .profileImage {
+    width: 30px;
+    height: 30px;
+  }
+
+  .profileChevron {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+@media (max-width: 520px) {
+  .headerContainer {
+    flex-wrap: nowrap;
+    gap: 8px;
+  }
+
+  .headerTitle {
+    font-size: 18px;
+  }
+
+  .headerRight {
+    flex-wrap: nowrap;
+    gap: 6px;
+    justify-content: flex-end;
+  }
+
+  .profileContainer {
+    font-size: 12px;
+    padding: 2px 6px;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .profileName {
+    max-width: 110px;
+  }
+
+  .mobileMenuBtn {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+  }
+
+  .mobileMenuBtn svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .iconBtn {
+    width: 30px;
+    height: 30px;
+    border-radius: 10px;
+  }
+
+  .icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .profileImage {
+    width: 26px;
+    height: 26px;
+  }
+
+  .profileChevron {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+@media (max-width: 380px) {
+  .profileName {
+    display: none;
   }
 }

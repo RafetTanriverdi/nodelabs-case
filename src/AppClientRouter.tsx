@@ -8,6 +8,7 @@ import App from "./App";
 import { routes, type RouteType } from "@rt/routing/routes";
 import ErrorPage from "@rt/pages/OtherPages/ErrorPage/ErrorPage";
 import ErrorBoundary from "@rt/pages/OtherPages/ErrorPage/ErrorBoundaryPage";
+import PageLoader from "@rt/components/ui/PageLoader/PageLoader";
 
 const AppClientRouter = () => {
     const pages = import.meta.glob("./pages/**/*.tsx") as Record<
@@ -29,7 +30,7 @@ const AppClientRouter = () => {
         return {
             path: route.path,
             element: (
-                <Suspense fallback={'...loading'}>
+                <Suspense fallback={<PageLoader />}>
                     <PageComponent />
                 </Suspense>
             ),

@@ -6,6 +6,15 @@
   display: flex;
   flex-direction: column;
   border-right: 1px solid #eef0f3;
+  height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.topRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .brand {
@@ -14,6 +23,24 @@
   align-items: center;
   gap: 10px;
   padding: 8px 10px 18px;
+}
+
+.closeBtn {
+  display: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #98a2b3;
+  cursor: pointer;
+  place-items: center;
+}
+
+.closeBtn:hover {
+  background: #f2f4f7;
+  color: #475467;
+  border-color: #eef0f3;
 }
 
 .brandIcon {
@@ -109,7 +136,7 @@
   color: #111827;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 900px) and (min-width: 721px) {
   .sidebar {
     width: 88px;
     min-width: 88px;
@@ -121,5 +148,16 @@
   .navItem,
   .footerItem {
     justify-content: center;
+  }
+}
+
+@media (max-width: 720px) {
+  .sidebar {
+    width: 260px;
+    min-width: 260px;
+  }
+
+  .closeBtn {
+    display: grid;
   }
 }

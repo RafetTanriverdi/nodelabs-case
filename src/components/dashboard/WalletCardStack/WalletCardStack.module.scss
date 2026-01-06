@@ -262,3 +262,56 @@ svg > g {
   height: 25px;
   color: rgba(16, 24, 40, 0.35);
 }
+
+@media (max-width: 1100px) {
+  .stack {
+    min-height: 290px;
+  }
+}
+
+@media (max-width: 520px) {
+  .cardInner {
+    padding: 12px;
+  }
+
+  .rowIcons {
+    margin-top: 20px;
+  }
+
+  .numberDark,
+  .numberLight {
+    margin-top: 14px;
+  }
+
+  .bottomRow {
+    margin-top: 14px;
+  }
+
+  .chipIcon svg {
+    width: 32px;
+    height: 24px;
+  }
+
+  .chipIconDark svg {
+    width: 32px;
+    height: 32px;
+  }
+
+  .contactlessDarkIcon,
+  .contactlessLightIcon {
+    width: 28px;
+    height: 22px;
+  }
+}
+
+@media (max-width: 420px) {
+  .numberDark {
+    font-size: 16px;
+    letter-spacing: 0.1em;
+  }
+
+  .numberLight {
+    font-size: 14px;
+    letter-spacing: 0.06em;
+  }
+}

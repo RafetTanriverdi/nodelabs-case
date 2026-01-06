@@ -11,6 +11,7 @@ import {
   HiPresentationChartLine,
   HiQuestionMarkCircle,
   HiWallet,
+  HiXMark,
 } from "react-icons/hi2";
 
 type SidebarItem = {
@@ -31,10 +32,42 @@ const mainItems: SidebarItem[] = [
   { to: "/settings", label: "Settings", icon: <HiCog6Tooth /> },
 ];
 
-export default function Sidebar({ onLogout }: { onLogout?: () => void }) {
+type Props = {
+  id?: string;
+  onLogout?: () => void;
+  onNavigate?: () => void;
+  onClose?: () => void;
+  className?: string;
+};
+
+export default function Sidebar({
+  id,
+  onLogout,
+  onNavigate,
+  onClose,
+  className,
+}: Props) {
+  const handleLogout = () => {
+    onLogout?.();
+    onNavigate?.();
+  };
+
   return (
-    <aside className={styles.sidebar} aria-label="Sidebar">
-      <img src={logo} alt="Brand Logo" className={styles.brand} />
+    <aside id={id} className={clsx(styles.sidebar, className)} aria-label="Sidebar">
+      <div className={styles.topRow}>
+        <img src={logo} alt="Brand Logo" className={styles.brand} />
+
+        {onClose ? (
+          <button
+            type="button"
+            className={styles.closeBtn}
+            onClick={onClose}
+            aria-label="Close menu"
+          >
+            <HiXMark aria-hidden="true" />
+          </button>
+        ) : null}
+      </div>
 
       <nav className={styles.nav} aria-label="Main navigation">
         {mainItems.map((item) => (
@@ -42,6 +75,7 @@ export default function Sidebar({ onLogout }: { onLogout?: () => void }) {
             key={item.to}
             to={item.to}
             end={item.to === "/"}
+            onClick={onNavigate}
             className={({ isActive }) =>
               clsx(styles.navItem, isActive && styles.active)
             }
@@ -55,14 +89,18 @@ export default function Sidebar({ onLogout }: { onLogout?: () => void }) {
       </nav>
 
       <div className={styles.footer}>
-        <a className={styles.footerItem} href="/help">
+        <a className={styles.footerItem} href="/help" onClick={onNavigate}>
           <span className={styles.icon} aria-hidden="true">
             <HiQuestionMarkCircle />
           </span>
           <span className={styles.label}>Help</span>
         </a>
 
-        <button type="button" className={styles.footerItem} onClick={onLogout}>
+        <button
+          type="button"
+          className={styles.footerItem}
+          onClick={handleLogout}
+        >
           <span className={styles.icon} aria-hidden="true">
             <HiOutlineArrowRightStartOnRectangle />
           </span>

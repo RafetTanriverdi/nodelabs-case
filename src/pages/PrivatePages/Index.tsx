@@ -1,5 +1,5 @@
 import { getToken } from "@rt/authentication/auth-utils";
-import PrivateLayout from "@rt/layouts/PrivateLayout";
+import PrivateLayout from "@rt/layouts/PrivateLayout/PrivateLayout";
 import { getRoutePath } from "@rt/routing/routes";
 import { ROUTES_ID } from "@rt/routing/routes-id";
 import { Navigate, Outlet } from "react-router-dom";

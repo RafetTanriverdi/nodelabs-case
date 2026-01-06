@@ -55,3 +55,13 @@
   height: 12px;
   pointer-events: none;
 }
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 22px;
+  }
+
+  .subtitle {
+    font-size: 13px;
+  }
+}

@@ -8,7 +8,8 @@ import { useQuery } from "@tanstack/react-query";
 import Text from "@rt/components/ui/Text/Text";
 import { HiOutlineSearch } from "react-icons/hi";
 import { IoNotifications } from "react-icons/io5";
-import { HiChevronDown } from "react-icons/hi2";
+import { HiBars3, HiChevronDown, HiXMark } from "react-icons/hi2";
+import { usePrivateLayoutStore } from "@rt/stores/private-layout-store";
 import styles from "./DashboardPage.module.scss";
 
 export default function DashboardPage() {
@@ -131,10 +132,28 @@ const DashboardHeader = () => {
       return res.data;
     },
   });
+  const isSidebarOpen = usePrivateLayoutStore((s) => s.isSidebarOpen);
+  const toggleSidebar = usePrivateLayoutStore((s) => s.toggleSidebar);
 
   return (
     <div className={styles.headerContainer}>
-      <Text variant="title">Dashboard</Text>
+      <button
+        type="button"
+        className={styles.mobileMenuBtn}
+        onClick={toggleSidebar}
+        aria-label={isSidebarOpen ? "Close menu" : "Open menu"}
+        aria-controls="private-sidebar"
+        aria-expanded={isSidebarOpen}
+      >
+        {isSidebarOpen ? (
+          <HiXMark aria-hidden="true" />
+        ) : (
+          <HiBars3 aria-hidden="true" />
+        )}
+      </button>
+      <Text variant="title" className={styles.headerTitle}>
+        Dashboard
+      </Text>
 
       <div className={styles.headerRight}>
         <button type="button" className={styles.iconBtn} aria-label="Search">
@@ -153,7 +172,9 @@ const DashboardHeader = () => {
             src={"https://randomuser.me/api/portraits/men/52.jpg"}
             alt="Profile"
           />
-          {profileLoading ? "Loading..." : profile?.data?.fullName}
+          <span className={styles.profileName}>
+            {profileLoading ? "Loading..." : profile?.data?.fullName}
+          </span>
           <HiChevronDown className={styles.profileChevron} aria-hidden="true" />
         </span>
       </div>
