@@ -65,14 +65,14 @@ export default function DashboardPage() {
             {workingCapitalLoading ? (
               <div className={styles.cardSkeletonLg} aria-busy="true" />
             ) : (
-              <WorkingCapitalChart items={workingCapital?.data?.data ?? []} />
+              <WorkingCapitalChart items={workingCapital?.data?.data} />
             )}
 
             {recentLoading ? (
               <div className={styles.cardSkeletonMd} aria-busy="true" />
             ) : (
               <RecentTransactions
-                transactions={recent?.data?.transactions ?? []}
+                transactions={recent?.data?.transactions}
                 maxVisible={4}
               />
             )}
@@ -83,28 +83,8 @@ export default function DashboardPage() {
               <div className={styles.cardSkeletonSm} aria-busy="true" />
             ) : (
               <WalletCardStack
-                topCard={
-                  wallet?.data?.cards?.[0] ?? {
-                    brand: "Fintech.",
-                    bank: "Universal Bank",
-                    cardNumber:
-                      "ѓ?Ѕѓ?Ѕѓ?Ѕѓ?Ѕ ѓ?Ѕѓ?Ѕѓ?Ѕѓ?Ѕ ѓ?Ѕѓ?Ѕѓ?Ѕѓ?Ѕ ѓ?Ѕѓ?Ѕѓ?Ѕѓ?Ѕ",
-                    expiryMonth: "09",
-                    expiryYear: "25",
-                    network: "Visa",
-                  }
-                }
-                bottomCard={
-                  wallet?.data?.cards?.[1] ?? {
-                    brand: "Fintech.",
-                    bank: "Commercial Bank",
-                    cardNumber:
-                      "ѓ?Ѕѓ?Ѕѓ?Ѕѓ?Ѕ ѓ?Ѕѓ?Ѕѓ?Ѕѓ?Ѕ ѓ?Ѕѓ?Ѕѓ?Ѕѓ?Ѕ ѓ?Ѕѓ?Ѕѓ?Ѕѓ?Ѕ",
-                    expiryMonth: "09",
-                    expiryYear: "25",
-                    network: "Mastercard",
-                  }
-                }
+                topCard={wallet?.data?.cards?.[0]}
+                bottomCard={wallet?.data?.cards?.[1]}
               />
             )}
 
@@ -113,7 +93,7 @@ export default function DashboardPage() {
             ) : (
               <ScheduledTransfers
                 title="Scheduled Transfers"
-                transfers={scheduled?.data?.transfers ?? []}
+                transfers={scheduled?.data?.transfers}
                 maxVisible={4}
               />
             )}

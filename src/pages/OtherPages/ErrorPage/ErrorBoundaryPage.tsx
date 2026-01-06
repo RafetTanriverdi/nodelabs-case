@@ -1,4 +1,8 @@
 import React, { type ErrorInfo, type ReactNode } from "react";
+import Button from "@rt/components/ui/Button/Button";
+import ErrorState from "@rt/components/ui/ErrorState/ErrorState";
+import { HiOutlineExclamationTriangle } from "react-icons/hi2";
+import styles from "./ErrorBoundaryPage.module.scss";
 
 interface ErrorBoundaryProps {
     children: ReactNode;
@@ -28,14 +32,40 @@ class ErrorBoundary extends React.Component<
     render() {
         if (this.state.hasError) {
             return (
-                <>
-                    <h1>Oops! An error occurred.</h1>
-                    <button
-                        onClick={() => window.location.replace("/")}
-                    >
-                        GO HOME
-                    </button>
-                </>
+                <div className={styles.page}>
+                    <div className={styles.container}>
+                        <ErrorState
+                            icon={
+                                <HiOutlineExclamationTriangle aria-hidden="true" />
+                            }
+                            code="APP"
+                            title="Something went wrong"
+                            description="The app hit an unexpected error. You can reload the page or go back to the dashboard."
+                            actions={
+                                <>
+                                    <Button
+                                        variant="primary"
+                                        type="button"
+                                        onClick={() =>
+                                            window.location.assign("/")
+                                        }
+                                    >
+                                        Go to Dashboard
+                                    </Button>
+                                    <Button
+                                        variant="secondary"
+                                        type="button"
+                                        onClick={() =>
+                                            window.location.reload()
+                                        }
+                                    >
+                                        Reload Page
+                                    </Button>
+                                </>
+                            }
+                        />
+                    </div>
+                </div>
             );
         }
 
